@@ -79,6 +79,19 @@ py_library(
     ],
 )
 
+py_test(
+    name = "manager_test",
+    size = "small",
+    srcs = ["manager_test.py"],
+    srcs_version = "PY2AND3",
+    visibility = ["//tensorboard:internal"],
+    deps = [
+        ":manager",
+        "//tensorboard/util:tb_logging",
+        "//tensorboard:expect_tensorflow_installed",
+    ],
+)
+
 py_library(
     name = "program",
     srcs = ["program.py"],

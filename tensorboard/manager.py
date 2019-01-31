@@ -23,8 +23,6 @@ import collections
 import errno
 import json
 import os
-import re
-import shlex
 import subprocess
 import tempfile
 
@@ -107,7 +105,7 @@ def cache_key(working_directory, arguments):
     place of the other.
   """
   if not isinstance(arguments, (list, tuple)):
-    raise ValueError(
+    raise TypeError(
         "'arguments' should be a list of arguments, but found: %r "
         "(use `shlex.split` if given a string)"
         % (arguments,)

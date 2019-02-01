@@ -231,6 +231,7 @@ class TensorBoard(object):
         version=version.VERSION,
         start_time=int(datetime.datetime.utcnow().strftime("%s")),
         port=server_url.port,
+        pid=os.getpid(),
         path_prefix=self.flags.path_prefix,
         logdir=self.flags.logdir,
         db=self.flags.db,

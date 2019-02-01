@@ -52,17 +52,18 @@ class ManagerTest(tf.test.TestCase):
         version="1.23.45",
         start_time=1548973541 + i,
         port=6060 + i,
+        pid=76540 + i,
         path_prefix="/foo",
         logdir="~/my_data/",
         db="",
         cache_key="asdf",
     )
 
-  @mock.patch("os.getpid", lambda: 76543)
+  @mock.patch("os.getpid", lambda: 76540)
   def test_write_remove_info_file(self):
     info = self._make_info()
     manager.write_info_file(info)
-    filename = "pid-76543.info"
+    filename = "pid-76540.info"
     expected_filepath = os.path.join(self.info_dir, filename)
     self.assertEqual(os.listdir(self.info_dir), [filename])
     with open(expected_filepath) as infile:
@@ -109,11 +110,11 @@ class ManagerTest(tf.test.TestCase):
   def test_get_all(self):
 
     def add_info(i):
-      with mock.patch("os.getpid", lambda: 7650 + i):
+      with mock.patch("os.getpid", lambda: 76540 + i):
         manager.write_info_file(self._make_info(i))
 
     def remove_info(i):
-      with mock.patch("os.getpid", lambda: 7650 + i):
+      with mock.patch("os.getpid", lambda: 76540 + i):
         manager.remove_info_file()
 
     make_info = self._make_info
@@ -134,9 +135,9 @@ class ManagerTest(tf.test.TestCase):
 
   def test_get_all_ignores_bad_files(self):
     with open(os.path.join(self.info_dir, "pid-1234.info"), "w") as outfile:
-      outfile.write("good luck parsing this")
+      outfile.write("good luck parsing this\n")
     with open(os.path.join(self.info_dir, "pid-5678.info"), "w") as outfile:
-      outfile.write('{"json":"yes","valid_tbinfo":"no"}')
+      outfile.write('{"valid_json":"yes","valid_tbinfo":"no"}\n')
     with mock.patch.object(tb_logging.get_logger(), "warning") as fn:
       self.assertEqual(manager.get_all(), [])
     self.assertEqual(fn.call_count, 2)

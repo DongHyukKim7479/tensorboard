@@ -35,6 +35,7 @@ TensorboardInfo = collections.namedtuple(
     (
         "version",  # tensorboard.version.VERSION
         "start_time",  # int: seconds since epoch, UTC
+        "pid",
         "port",
         "path_prefix",
         "logdir",

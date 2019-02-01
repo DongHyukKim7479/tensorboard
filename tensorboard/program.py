@@ -33,13 +33,13 @@ from abc import ABCMeta
 from abc import abstractmethod
 import argparse
 import atexit
-import datetime
 from collections import defaultdict
 import errno
 import os
 import signal
 import socket
 import sys
+import time
 import threading
 import inspect
 
@@ -229,7 +229,7 @@ class TensorBoard(object):
     server_url = urllib.parse.urlparse(server.get_url())
     info = manager.TensorboardInfo(
         version=version.VERSION,
-        start_time=int(datetime.datetime.utcnow().strftime("%s")),
+        start_time=int(time.time()),
         port=server_url.port,
         pid=os.getpid(),
         path_prefix=self.flags.path_prefix,
